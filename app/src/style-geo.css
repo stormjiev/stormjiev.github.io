@@ -1,0 +1,157 @@
+/* ============================================================
+   style-geo.css · 大改版「Bauhaus / Swiss 几何构成」动效覆盖层
+   ------------------------------------------------------------
+   目的：把克隆自原站的「太空」标志性动效全部替换为原创几何母题，规避侵权。
+     · 背景：几何构成漂移(canvas) + 静态栅格(CSS)，替代星空银河
+     · Hero：旋转几何构成印记，替代 WebGL 地球
+     · 时间线：彗星拖尾 → Swiss 套准方块 token
+     · 作品：3D 透视景深 → 平面硬投影 + 色条
+     · 星座：圆形星核 → 几何菱形；线条 Swiss 生长
+     · 标题：包豪斯短色条装饰
+
+   加载顺序：style.css → style-light.css → style-geo.css（本层最后，覆盖前两层）
+   仅作用于大改版页（light.html on branch redesign/original-motion）。
+   ============================================================ */
+
+/* ---------- 背景：几何构成画布 + 静态栅格 ---------- */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  /* canvas 每帧清空为透明，CSS 栅格从其后透出 */
+  background-image:
+    linear-gradient(rgba(41, 37, 33, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(41, 37, 33, 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  background-position: center;
+}
+
+/* ---------- Hero 几何构成主体（替代 .globe-canvas） ---------- */
+.hero-mark {
+  position: absolute;
+  right: 4%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: min(46vw, 620px);
+  height: min(46vw, 620px);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 名字下加包豪斯短色条 */
+.hero-badge {
+  position: relative;
+}
+.hero-badge::after {
+  content: "";
+  display: block;
+  width: 64px;
+  height: 6px;
+  margin-top: 20px;
+  background: #c4744e;
+}
+
+/* ---------- 区块标题：包豪斯短色条装饰 ---------- */
+.section-title {
+  position: relative;
+}
+.section-title::after {
+  content: "";
+  display: block;
+  width: 40px;
+  height: 4px;
+  margin: 18px auto 0;
+  background: #c4744e;
+}
+
+/* ---------- 时间线：彗星拖尾 → Swiss 套准方块 token ---------- */
+.timeline-meteor {
+  width: 9px;
+  height: 9px;
+  border-radius: 0;
+  background: #c4744e;
+  box-shadow: none;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg); /* 菱形 token */
+}
+@media (max-width: 767px) {
+  .timeline-meteor {
+    width: 9px;
+    height: 9px;
+    background: #c4744e;
+    transform: translateX(-50%) rotate(45deg);
+    left: 50%;
+  }
+}
+
+/* 时间线节点圆点 → 实心方块（几何化） */
+.timeline-dot {
+  border-radius: 0;
+  width: 9px;
+  height: 9px;
+  background: #b0633f;
+  box-shadow: none;
+}
+
+/* ---------- 星座：圆形星核 → 几何菱形；十字保留为套准线 ---------- */
+.star-core {
+  border-radius: 0;
+  width: 10px;
+  height: 10px;
+  transform: rotate(45deg);
+  background: #c4744e;
+  box-shadow: none;
+}
+.star-core.flash {
+  box-shadow: 0 0 10px rgba(196, 116, 86, 0.5);
+}
+
+/* ---------- 作品卡片：3D 透视景深 → 平面 Swiss 硬投影 ---------- */
+.works-grid {
+  perspective: none;
+  transform-style: flat;
+}
+/* 取消 translateZ 扇形堆叠 */
+.works-grid .work-card:nth-child(1),
+.works-grid .work-card:nth-child(2),
+.works-grid .work-card:nth-child(3),
+.works-grid .work-card:nth-child(4),
+.works-grid .work-card:nth-child(5) {
+  transform: none;
+}
+
+/* 几何方角卡片 */
+.work-card {
+  border-radius: 4px;
+}
+
+/* 聚焦态：平面上提 + 加重硬投影 + 左侧色条，无旋转无 translateZ */
+.section-works .work-card.depth-active,
+.section-works .work-card:nth-child(odd).depth-active,
+.section-works .work-card:nth-child(even).depth-active {
+  transform: translateY(-12px) scale(1.03);
+  box-shadow: 10px 12px 0 rgba(var(--glow-rgb), 0.25), 0 16px 36px rgba(41, 37, 33, 0.12);
+  border-left: 4px solid rgb(var(--glow-rgb));
+}
+
+.section-works .work-card.depth-dimmed {
+  filter: saturate(0.85) brightness(0.99);
+  opacity: 0.55;
+  scale: 1;
+}
+
+/* ---------- 联系区图标圆环 → 方角（Swiss） ---------- */
+.contact-icon {
+  border-radius: 6px;
+}
+.contact-icon::after {
+  border-radius: 6px;
+}
+
+/* 二维码弹层方角 */
+.contact-qrcode-popup {
+  border-radius: 4px;
+}

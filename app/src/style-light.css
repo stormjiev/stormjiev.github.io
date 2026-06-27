@@ -1,0 +1,337 @@
+/* ============================================================
+   style-light.css · 浅色「暖色出版物」主题覆盖层
+   ------------------------------------------------------------
+   设计语言：Anthropic / Claude 谱系的 Warm Editorial
+     · 奶油纸底 + 赤陶橙 accent + 近黑墨字
+     · 衬线大字/数字（Latin）× 无衬线中文，编辑部混排
+     · 纸感平面卡片 + 硬投影规则线，替代深色版的玻璃辉光
+     · 暖色水彩漂移 + 浮尘微粒，替代深空星云
+   依据：huashu-design references/design-styles.md「暖色出版物」+
+         animation-best-practices.md（物理重量感 · 礼让观众 · 戛然而止）
+
+   ⚠️ 本文件是「覆盖层」，须在 style.css 之后加载。
+   布局/结构全部复用 style.css —— 改版与 bug 修复对深浅两版自动同步。
+   ============================================================ */
+
+:root {
+  /* 主 accent：赤陶橙 #CC785C */
+  --color-secondary: #c2603f;
+  --accent-rgb: 204, 120, 92;
+  /* 次 accent：鼠尾草橄榄（替代深色版的蓝），用于分隔线的细微变化 */
+  --blue-rgb: 138, 142, 110;
+  /* 「前景/墨色」：深色版里 --white-rgb 是前景，这里翻成近黑墨 #292521 */
+  --white-rgb: 41, 37, 33;
+
+  --text-primary: #1f1b16;
+  --text-secondary: #6f675c;
+
+  /* Latin 标题/数字改用衬线，营造出版物气质；中文仍走 --font-cn 无衬线 */
+  --font-display: "Fraunces", Georgia, "Times New Roman", "Songti SC",
+    "Noto Serif SC", serif;
+}
+
+/* ---------- 纸底 · 颗粒 · 暖色水彩漂移 ---------- */
+
+body {
+  color: var(--text-primary);
+  background-color: #f7f2e8; /* 奶油纸 */
+}
+
+/* 暖色水彩漂移（替代深空星云）：奶油 / 蜜桃 / 鼠尾草 三色低饱和晕染缓慢游走 */
+body::after {
+  background-image:
+    radial-gradient(ellipse at 18% 42%, rgba(216, 151, 111, 0.20) 0%, transparent 52%),
+    radial-gradient(ellipse at 82% 22%, rgba(231, 205, 160, 0.28) 0%, transparent 48%),
+    radial-gradient(ellipse at 62% 82%, rgba(170, 180, 150, 0.16) 0%, transparent 52%),
+    radial-gradient(ellipse at 8% 88%, rgba(216, 151, 111, 0.12) 0%, transparent 44%);
+}
+
+/* 颗粒纹理：浅色下改 multiply，避免发灰，强度略增做纸感 */
+body::before {
+  opacity: 0.045;
+  mix-blend-mode: multiply;
+}
+
+/* aurora 画布（复用 starfield 的全屏定位） */
+.aurora {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ---------- 光标辉光：青绿 → 暖橙 ---------- */
+.cursor-glow {
+  background: radial-gradient(
+    600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(204, 120, 92, 0.07),
+    transparent 40%
+  );
+}
+
+/* ---------- 左侧页码导航：浅底上需要更实的非激活点 ---------- */
+.page-dot {
+  background: rgba(41, 37, 33, 0.18);
+}
+
+/* ---------- Hero ---------- */
+
+/* 名字：去掉霓虹流光渐变，改实色赤陶 + 衬线，仅保留入场上浮 */
+.hero-badge {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: #1f1b16;
+  animation: heroFadeUp 0.8s ease-out 0.2s both;
+  letter-spacing: -0.5px;
+}
+
+.hero-title {
+  color: rgba(41, 37, 33, 0.92);
+}
+
+.hero-tag {
+  color: var(--text-secondary);
+  border: 1px solid rgba(204, 120, 92, 0.35);
+  background: rgba(204, 120, 92, 0.06);
+}
+
+.scroll-arrow {
+  border-right: 2px solid #c2603f;
+  border-bottom: 2px solid #b08d4a;
+}
+
+/* 浅色下地球更克制 */
+.globe-canvas {
+  opacity: 0.55;
+}
+
+/* ---------- 区块标题 · 关于区 ---------- */
+
+/* 标题用墨色 + 一条赤陶 kicker 线，编辑部气质 */
+.section-title {
+  color: #2b2620;
+  font-weight: 600;
+}
+
+.timeline-year {
+  color: rgba(204, 120, 92, 0.85);
+}
+
+.timeline-label {
+  color: rgba(41, 37, 33, 0.82);
+}
+
+.timeline-dot {
+  background: rgba(204, 120, 92, 0.9);
+  box-shadow: 0 0 6px rgba(204, 120, 92, 0.35), 0 0 16px rgba(204, 120, 92, 0.12);
+}
+
+/* 时间线流星：白 → 暖奶油 */
+.timeline-meteor {
+  background: linear-gradient(90deg, transparent, rgba(216, 151, 111, 0.15), rgba(204, 120, 92, 0.85), #b0633f);
+  box-shadow: 0 0 6px rgba(204, 120, 92, 0.4), 0 0 12px rgba(204, 120, 92, 0.15);
+}
+@media (max-width: 767px) {
+  .timeline-meteor {
+    background: linear-gradient(180deg, transparent, rgba(216, 151, 111, 0.15), rgba(204, 120, 92, 0.85), #b0633f);
+  }
+}
+
+/* 大数字：去霓虹渐变，改实色赤陶衬线 */
+.stat-number {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: #b0633f;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-label {
+  color: rgba(41, 37, 33, 0.82);
+}
+
+.about-quote {
+  color: rgba(176, 99, 63, 0.85);
+  font-style: italic;
+}
+
+/* ---------- 星座区 ---------- */
+
+.constellation-line {
+  stroke: rgba(204, 120, 92, 0.28);
+  filter: drop-shadow(0 0 2px rgba(204, 120, 92, 0.18));
+}
+
+/* 流星拖尾尖端：白 → 暖白 */
+.constellation-meteor::before {
+  background: linear-gradient(to right,
+    transparent,
+    rgba(204, 120, 92, 0.08) 40%,
+    rgba(176, 99, 63, 0.45) 75%,
+    #b0633f
+  );
+}
+.constellation-meteor::after {
+  background: #b0633f;
+  box-shadow: 0 0 4px rgba(176, 99, 63, 0.6), 0 0 10px rgba(204, 120, 92, 0.4);
+}
+
+/* 星核：白点 → 赤陶墨点（浅底上要看得见） */
+.star-core {
+  background: #b0633f;
+  box-shadow: 0 0 2px rgba(176, 99, 63, 0.6), 0 0 6px rgba(204, 120, 92, 0.3);
+}
+.star-core::before {
+  background: linear-gradient(90deg, transparent, rgba(176, 99, 63, 0.6), transparent);
+}
+.star-core::after {
+  background: linear-gradient(180deg, transparent, rgba(176, 99, 63, 0.6), transparent);
+}
+.star-core.flash {
+  box-shadow: 0 0 6px rgba(176, 99, 63, 0.7), 0 0 14px rgba(204, 120, 92, 0.45), 0 0 28px rgba(204, 120, 92, 0.15);
+}
+
+.star-info h3 {
+  color: rgba(41, 37, 33, 0.9);
+}
+.star-node:hover .star-info h3 {
+  color: #1f1b16;
+}
+.star-info p {
+  color: rgba(41, 37, 33, 0.6);
+}
+
+/* ---------- 作品卡片：玻璃辉光 → 纸感平面 + 硬投影规则线 ---------- */
+
+/* 五张卡片改为暖色低饱和调色，适配奶油底 */
+.work-card-1 { --glow-rgb: 184, 138, 64; }   /* 赭金 */
+.work-card-2 { --glow-rgb: 120, 140, 168; }  /* 雾蓝 */
+.work-card-3 { --glow-rgb: 150, 120, 168; }  /* 雾紫 */
+.work-card-4 { --glow-rgb: 196, 116, 86; }   /* 赤陶 */
+.work-card-5 { --glow-rgb: 190, 110, 110; }  /* 陶红 */
+
+.work-card {
+  background:
+    linear-gradient(90deg, transparent, rgba(var(--glow-rgb), 0.55) 50%, transparent) top / 100% 2px no-repeat,
+    #fffdf7;
+  border: 1px solid rgba(41, 37, 33, 0.10);
+  border-radius: 14px;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 4px 5px 0 rgba(41, 37, 33, 0.05), 0 1px 2px rgba(41, 37, 33, 0.04);
+}
+
+/* 扫光高光：白闪 → 暖闪 */
+.work-card::before {
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(var(--glow-rgb), 0.10) 45%,
+    rgba(255, 245, 230, 0.5) 50%,
+    rgba(var(--glow-rgb), 0.10) 55%,
+    transparent 60%
+  );
+  background-size: 250% 100%;
+  background-position: 200% 0;
+}
+
+.work-card:hover {
+  background:
+    linear-gradient(90deg, transparent, rgba(var(--glow-rgb), 0.8) 50%, transparent) top / 100% 2px no-repeat,
+    #fffefb;
+  border-color: rgba(var(--glow-rgb), 0.5);
+  box-shadow: 6px 7px 0 rgba(var(--glow-rgb), 0.18), 0 10px 28px rgba(41, 37, 33, 0.10);
+}
+
+.work-card h3 {
+  font-family: var(--font-cn); /* 卡片中文标题保持无衬线，清晰 */
+  color: rgba(41, 37, 33, 0.92);
+}
+.work-card:hover h3 {
+  color: #1a1a18;
+}
+.work-card p {
+  color: rgba(41, 37, 33, 0.6);
+}
+.work-card:hover p {
+  color: var(--text-secondary);
+}
+
+/* depth 聚焦态：暖投影替代冷黑投影 */
+.section-works .work-card.depth-active {
+  box-shadow: 8px 12px 28px rgba(41, 37, 33, 0.18), 0 0 30px rgba(var(--glow-rgb), 0.20);
+}
+.section-works .work-card.depth-active h3 { color: #1a1a18; }
+.section-works .work-card.depth-active p { color: var(--text-secondary); }
+.section-works .work-card.depth-dimmed {
+  filter: brightness(0.97) saturate(0.9);
+  opacity: 0.5;
+}
+
+.work-card-cta {
+  color: rgba(var(--glow-rgb), 0.95);
+}
+
+/* ---------- 联系区 ---------- */
+
+.contact-qrcode-popup {
+  background-color: rgba(255, 253, 247, 0.97);
+  border: 1px solid rgba(204, 120, 92, 0.25);
+  box-shadow: 0 12px 40px rgba(41, 37, 33, 0.18);
+}
+.contact-qrcode-popup span {
+  color: var(--text-secondary);
+}
+
+.contact-copy {
+  background: linear-gradient(90deg, rgba(41, 37, 33, 0.25), rgba(204, 120, 92, 0.65), rgba(41, 37, 33, 0.25));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---------- 同站主题切换按钮（深/浅互跳，记住偏好） ---------- */
+
+.theme-switch {
+  position: fixed;
+  top: 22px;
+  right: 22px;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 16px 9px 13px;
+  font-family: var(--font-cn);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #6f675c;
+  background: rgba(255, 253, 247, 0.78);
+  border: 1px solid rgba(41, 37, 33, 0.12);
+  border-radius: 100px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 10px rgba(41, 37, 33, 0.06);
+  transition: color 0.25s ease, border-color 0.25s ease, transform 0.25s var(--ease-spring), box-shadow 0.25s ease;
+}
+.theme-switch:hover {
+  color: #c2603f;
+  border-color: rgba(204, 120, 92, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(204, 120, 92, 0.16);
+}
+.theme-switch svg {
+  width: 16px;
+  height: 16px;
+}
+
+@media (max-width: 767px) {
+  .theme-switch {
+    top: 14px;
+    right: 14px;
+    padding: 7px 13px 7px 11px;
+    font-size: 12px;
+  }
+}

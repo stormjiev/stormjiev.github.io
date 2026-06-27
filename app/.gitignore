@@ -1,0 +1,9 @@
+node_modules
+dist
+.DS_Store
+screenshots/local
+screenshots/diff
+*.log
+
+# Office/Keynote 打开时的临时锁文件
+.~*
