@@ -3,3 +3,4 @@ app/node_modules/
 app/dist/
 .DS_Store
 prompt.md
+README.md
