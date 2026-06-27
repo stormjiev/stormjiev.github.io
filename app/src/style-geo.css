@@ -35,8 +35,9 @@
   right: 4%;
   top: 50%;
   transform: translateY(-50%);
-  width: min(46vw, 620px);
-  height: min(46vw, 620px);
+  /* 同时受视口高度约束，避免在「宽而矮」窗口里正方形画布超出视口被裁切（看似压扁变形） */
+  width: min(46vw, 86vh, 620px);
+  height: min(46vw, 86vh, 620px);
   pointer-events: none;
   z-index: 1;
 }
