@@ -325,10 +325,10 @@ a {
 .hero-notice {
   margin-top: 4px;
   font-family: var(--font-cn);
-  font-size: clamp(13px, 1.6vw, 16px);
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  line-height: 1.6;
+  font-size: clamp(18px, 3.2vw, 32px);
+  font-weight: 700;
+  letter-spacing: 2px;
+  line-height: 1.4;
   color: var(--text-secondary);
   opacity: 0;
   animation: heroFadeUp 0.8s ease-out 1s both;
